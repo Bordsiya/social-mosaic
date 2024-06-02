@@ -1,6 +1,5 @@
 package com.example.socialmosaiccore.controller
 
-import com.example.socialmosaiccore.exception.ProcessException
 import com.example.socialmosaiccore.model.Error
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
