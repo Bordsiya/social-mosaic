@@ -26,6 +26,8 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway-mvc")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	//implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
 }
 
 dependencyManagement {

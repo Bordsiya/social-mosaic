@@ -1,0 +1,50 @@
+spring:
+  application:
+    name:
+      api-gateway-internal
+
+  cloud:
+    gateway:
+      routes:
+        - id: imgThemesUpdatePost
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=POST
+            - Path=/v1/img/theme/update
+
+        - id: groupThemesUpdatePost
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=POST
+            - Path=/v1/group/theme/update
+
+        - id: friendsUpdatePost
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=POST
+            - Path=/v1/friend/update
+
+        - id: imgSimilarityUpdatePost
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=POST
+            - Path=/v1/img/theme/similarity
+
+        - id: groupSimilarityUpdatePost
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=POST
+            - Path=/v1/group/theme/similarity
+
+        - id: draftApplyPost
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=POST
+            - Path=/v1/graph/draft/apply
+
+        - id: graphGet
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=GET
+            - Path=/v1/graph
+            - Query=graph_revision,type

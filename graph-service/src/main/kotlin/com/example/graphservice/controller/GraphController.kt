@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 class GraphController(
 
 ): GraphApi {
-    override fun graphGraphSettingsGet(graphRevision: String): ResponseEntity<GraphSettingsResponse> {
+    override fun graphSettingsGet(graphRevision: String): ResponseEntity<GraphSettingsResponse> {
         TODO("Not yet implemented")
     }
 

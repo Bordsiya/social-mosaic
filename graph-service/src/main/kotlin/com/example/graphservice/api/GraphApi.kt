@@ -17,7 +17,7 @@ interface GraphApi {
             params = ["graph_revision"],
             produces = ["application/json"],
     )
-    fun graphGraphSettingsGet(
+    fun graphSettingsGet(
             @RequestParam("graph_revision") graphRevision: String
     ): ResponseEntity<GraphSettingsResponse>
 

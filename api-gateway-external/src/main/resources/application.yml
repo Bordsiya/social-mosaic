@@ -1,0 +1,77 @@
+spring:
+  application:
+    name:
+      api-gateway-external
+
+  cloud:
+    gateway:
+      routes:
+        - id: updateGraphPost
+          uri: http://core-service-1:8080
+          predicates:
+            - Method=POST
+            - Path=/v1/graph/update
+
+        - id: updateGraphCheck
+          uri: http://core-service-1:8080
+          predicates:
+            - Method=GET
+            - Path=/v1/graph/update/check
+            - Query=request_id
+
+        - id: analyseGraphPost
+          uri: http://core-service-1:8080
+          predicates:
+            - Method=POST
+            - Path=/v1/graph/analyse
+            - Query=graph_revision
+
+        - id: analyseGraphCheck
+          uri: http://core-service-1:8080
+          predicates:
+            - Method=GET
+            - Path=/v1/graph/analyse/check
+            - Query=request_id
+
+        - id: analyticGet
+          uri: http://analyse-service-1:8080
+          predicates:
+            - Method=GET
+            - Path=/v1/analytic
+            - Query=analytic_revision
+          filters:
+            - RewritePath=/v1/analytic, /v1/analytic
+
+        - id: analyticRevisionGet
+          uri: http://analyse-service-1:8080
+          predicates:
+            - Method=GET
+            - Path=/v1/analytic/revision
+            - Query=graph_revision
+
+        - id: analyticSettingsGet
+          uri: http://analyse-service-1:8080
+          predicates:
+            - Method=GET
+            - Path=/v1/analytic/setting
+            - Query=analytic_revision
+
+        - id: graphSettingsGet
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=GET
+            - Path=/v1/graph/setting
+            - Query=graph_revision
+
+        - id: graphRevisionGet
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=GET
+            - Path=/v1/graph/revision
+
+        - id: graphGet
+          uri: http://graph-service-1:8080
+          predicates:
+            - Method=GET
+            - Path=/v1/graph
+            - Query=graph_revision,type
