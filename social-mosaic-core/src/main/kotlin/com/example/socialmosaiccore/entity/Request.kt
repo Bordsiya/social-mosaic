@@ -40,9 +40,9 @@ data class Request(
         @JsonView
         val parentTask: String? = null,
 
-        @OneToOne(mappedBy = "request", cascade = [CascadeType.ALL], orphanRemoval = true)
+        @OneToOne(mappedBy = "requestId", cascade = [CascadeType.ALL], orphanRemoval = true)
         val processResult: ProcessResult? = null,
 
-        @OneToMany(mappedBy = "parentTask", cascade = [CascadeType.ALL], orphanRemoval = true)
+        @OneToMany(mappedBy = "parentId", cascade = [CascadeType.ALL], orphanRemoval = true)
         val tasks: List<Task> = listOf(),
 )

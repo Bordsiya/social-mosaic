@@ -13,9 +13,8 @@ data class Task(
         @JsonView
         val id: String? = null,
 
-        @Column(name = "parent_id", nullable = false)
         @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "parent_task")
+        @JoinColumn(name = "parent_task", nullable = false)
         @JsonView
         val parentId: Request? = null,
 

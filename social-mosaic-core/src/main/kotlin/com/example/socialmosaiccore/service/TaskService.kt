@@ -4,9 +4,11 @@ import com.example.socialmosaiccore.entity.Task
 import com.example.socialmosaiccore.exception.RequestNotFoundException
 import com.example.socialmosaiccore.model.TaskStatus
 import com.example.socialmosaiccore.repository.TaskRepository
+import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.UUID
 
+@Service
 class TaskService(
         val taskRepository: TaskRepository,
         val requestService: RequestService,
