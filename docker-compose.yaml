@@ -79,6 +79,18 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: rootpass
       MONGO_INITDB_DATABASE: mydatabase
 
+  api-gateway-external:
+    build:
+      dockerfile: api-gateway-external/Dockerfile
+    ports:
+      - '6000:8080'
+
+  api-gateway-internal:
+    build:
+      dockerfile: api-gateway-internal/Dockerfile
+    ports:
+      - '6100:8080'
+
   core-service-1:
     build:
       dockerfile: core-service/Dockerfile
