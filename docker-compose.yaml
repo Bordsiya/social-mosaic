@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  neo4j:
+  neo4j-graph-service:
     image: neo4j:latest
     ports:
       - '7888:7474' #http protocol

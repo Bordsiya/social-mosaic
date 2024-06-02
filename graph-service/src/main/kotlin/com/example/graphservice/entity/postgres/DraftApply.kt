@@ -1,4 +1,4 @@
-package com.example.graphservice.entity
+package com.example.graphservice.entity.postgres
 
 import com.fasterxml.jackson.annotation.JsonView
 import jakarta.persistence.*

@@ -1,4 +1,4 @@
-package com.example.graphservice.entity
+package com.example.graphservice.entity.postgres
 
 import jakarta.persistence.*
 import java.time.Instant
