@@ -38,6 +38,8 @@ dependencies {
 	// logging
 	implementation("org.springframework.boot:spring-boot-starter-logging")
 	implementation("io.github.microutils:kotlin-logging:2.0.10")
+
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 }
 
 tasks.withType<KotlinCompile> {

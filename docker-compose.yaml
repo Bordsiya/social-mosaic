@@ -69,6 +69,16 @@ services:
     depends_on:
       - zookeeper
 
+  mongodb-analyse-service:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+      MONGO_INITDB_DATABASE: mydatabase
+
   core-service-1:
     build:
       dockerfile: core-service/Dockerfile

@@ -1,4 +1,4 @@
-package com.example.analyseservice.entity
+package com.example.analyseservice.entity.postgres
 
 import com.fasterxml.jackson.annotation.JsonView
 import jakarta.persistence.Column
