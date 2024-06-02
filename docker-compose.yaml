@@ -18,6 +18,15 @@ services:
     ports:
       - '5432:5432'
 
+  postgres-analyse-service:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    ports:
+      - '5433:5432'
+
   zookeeper:
     image: zookeeper:3.5.8
     ports:
@@ -53,6 +62,24 @@ services:
 
   core-service-1:
     build:
-      dockerfile: Dockerfile
+      dockerfile: social-mosaic-core/Dockerfile
     ports:
-      - '9099:8080'
+      - '9000:8080'
+
+  update-service-1:
+    build:
+      dockerfile: update-service/Dockerfile
+    ports:
+      - '9100:8080'
+
+  analyse-service-1:
+    build:
+      dockerfile: analyse-service/Dockerfile
+    ports:
+      - '9200:8080'
+
+  graph-service-1:
+    build:
+      dockerfile: graph-service/Dockerfile
+    ports:
+      - '9300:8080'
