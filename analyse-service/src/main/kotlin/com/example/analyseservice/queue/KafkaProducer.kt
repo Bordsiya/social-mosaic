@@ -1,6 +1,6 @@
 package com.example.analyseservice.queue
 
-import com.example.analyseservice.model.AnalyseTaskResponse
+import com.example.analyseservice.model.response.AnalyseTaskResponse
 import com.example.analyseservice.util.ANALYSE_RESPONSES_TOPIC
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.kafka.core.KafkaTemplate

@@ -62,7 +62,7 @@ services:
 
   core-service-1:
     build:
-      dockerfile: social-mosaic-core/Dockerfile
+      dockerfile: core-service/Dockerfile
     ports:
       - '9000:8080'
 

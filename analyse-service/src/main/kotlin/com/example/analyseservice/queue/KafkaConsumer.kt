@@ -1,6 +1,6 @@
 package com.example.analyseservice.queue
 
-import com.example.analyseservice.model.Request
+import com.example.analyseservice.model.request.Request
 import com.example.analyseservice.util.ANALYSE_REQUESTS_TOPIC
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KotlinLogging
