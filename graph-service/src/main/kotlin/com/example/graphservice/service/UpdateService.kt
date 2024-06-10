@@ -1,6 +1,7 @@
 package com.example.graphservice.service
 
 import com.example.graphservice.adapter.VkApiAdapter
+import com.example.graphservice.entity.neo4j.UserNode
 import com.example.graphservice.entity.postgres.FriendsRevisionDraft
 import com.example.graphservice.entity.postgres.GroupThemesRevisionDraft
 import com.example.graphservice.entity.postgres.ImgThemesRevisionDraft
@@ -14,6 +15,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import org.springframework.stereotype.Service
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -120,11 +122,60 @@ class UpdateService(
             userId: Long,
             accessToken: String,
             friendsRevision: String,
+            dispatcher: CoroutineDispatcher,
+            groupsAmount: Int,
     ): GroupThemesRevisionDraft {
-        val graphNodes = graphService.findUserFriendsSimilarityGraph(
-                userId.toString(),
-                friendsRevision,
-        )
+        val sagaActions = ConcurrentLinkedQueue<SagaAction>()
+        val queue = Channel<Pair<Long, Int>>(CHANNEL_CAPACITY)
+        val visited = ConcurrentHashMap.newKeySet<Long>()
+
+        val graphNodeDescriptors = graphService.findUserFriendsSimilarityGraph(userId.toString(), friendsRevision)
+
+        try {
+            val saveAction = SaveFriendsRevisionAction(
+                    service = friendsRevisionDraftService,
+                    userId = userId.toString(),
+                    settings = objectMapper.writeValueAsString(updateSettings)
+            )
+            saveAction.execute()
+            sagaActions.add(saveAction)
+
+            val friendsRevisionDraft = saveAction.getSavedRevision()
+                    ?: throw IllegalStateException("No revision draft was saved.")
+
+            graphNodeDescriptors.forEach { node ->
+                queue.send(Pair(node.userId!!.toLong(), 0))
+                visited.add(node.userId.toLong())
+            }
+
+            withContext(dispatcher + CoroutineName("updateGroupThemesFromGraph")) {
+                launch {
+                    repeat(COROUTINES_AMOUNT) {
+                        launchBFSUpdateFriends(
+                                accessToken,
+                                queue,
+                                visited,
+                                updateSettings.maxDepth,
+                                updateSettings.maxConnectionsPerLayer,
+                                friendsRevision,
+                                sagaActions
+                        )
+                    }
+                }
+
+                queue.consumeEach {
+                }
+            }
+
+            // Ваши действия по завершению обработки, например, сохранение результата
+            val draft = SaveFriendsRevisionDraft() // Псевдокод
+            return draft
+        } catch (e: Exception) {
+            sagaActions.toList().asReversed().forEach { it.compensate() }
+            throw e
+        } finally {
+            queue.cancel()
+        }
     }
 
     suspend fun updateImgThemes(
@@ -136,6 +187,7 @@ class UpdateService(
                 userId.toString(),
                 friendsRevision,
         )
+        return ImgThemesRevisionDraft()
     }
 
     companion object {

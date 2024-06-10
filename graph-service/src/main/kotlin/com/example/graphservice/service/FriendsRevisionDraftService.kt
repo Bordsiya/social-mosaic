@@ -1,6 +1,8 @@
 package com.example.graphservice.service
 
 import com.example.graphservice.entity.postgres.FriendsRevisionDraft
+import com.example.graphservice.entity.postgres.FriendsRevisionDraftId
+import com.example.graphservice.exception.FriendsRevisionDraftNotFoundException
 import com.example.graphservice.repository.postgres.FriendsRevisionDraftRepository
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -10,6 +12,21 @@ import java.util.UUID
 class FriendsRevisionDraftService(
         private val friendsRevisionDraftRepository: FriendsRevisionDraftRepository,
 ) {
+
+    @Throws(
+            FriendsRevisionDraftNotFoundException::class,
+    )
+    fun getByRevisionId(
+            revisionDraftId: FriendsRevisionDraftId
+    ): FriendsRevisionDraft {
+        val result = friendsRevisionDraftRepository.findById(revisionDraftId)
+        if (result.isPresent) {
+            return result.get()
+        } else throw FriendsRevisionDraftNotFoundException(
+                userId = revisionDraftId.userId!!,
+                revision = revisionDraftId.id!!,
+        )
+    }
 
     fun save(
            userId: String,
@@ -26,10 +43,6 @@ class FriendsRevisionDraftService(
     }
 
     fun delete(id: String) {
-        try {
-            friendsRevisionDraftRepository.deleteById(id)
-        } catch (e: Exception) {
-            throw Exception("Failed to delete friends revision draft with id $id", e)
-        }
+        friendsRevisionDraftRepository.deleteById(id)
     }
 }

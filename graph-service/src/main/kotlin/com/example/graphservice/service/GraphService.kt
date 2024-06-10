@@ -46,4 +46,76 @@ class GraphService(
     fun findUserFriendsSimilarityGraph(userId: String, friendsRevision: String): List<UserNode> {
         return userRepository.findUserFriendsSimilarityGraph(userId, friendsRevision)
     }
+
+    fun updateImageThemes(userId: String, friendsRevision: String, imgThematicRevision: String, imgThemes: String): List<UserNode> {
+        return userRepository.updateImageThemes(userId, friendsRevision, imgThematicRevision, imgThemes)
+    }
+
+    fun removeImageThemes(userId: String, friendsRevision: String): List<UserNode> {
+        return userRepository.removeImageThemes(userId, friendsRevision)
+    }
+
+    fun updateGroupThemes(userId: String, friendsRevision: String, groupThematicRevision: String, groupThemes: String): List<UserNode> {
+        return userRepository.updateGroupThemes(userId, friendsRevision, groupThematicRevision, groupThemes)
+    }
+
+    fun removeGroupThemes(userId: String, friendsRevision: String): List<UserNode> {
+        return userRepository.removeGroupThemes(userId, friendsRevision)
+    }
+
+    fun updateImgSimilarity(
+            userId: String,
+            friendsRevision: String,
+            imgThematicRevision: String,
+            imgRevision: String
+    ): List<UserNode> {
+        return userRepository.addImgSimilarity(
+                userId,
+                friendsRevision,
+                imgThematicRevision,
+                imgRevision,
+        )
+    }
+
+    fun removeImgSimilarity(
+            userId: String,
+            friendsRevision: String,
+            imgThematicRevision: String,
+            imgRevision: String
+    ): List<UserNode> {
+        return userRepository.removeImgSimilarity(
+                userId,
+                friendsRevision,
+                imgThematicRevision,
+                imgRevision,
+        )
+    }
+
+    fun updateGroupSimilarity(
+            userId: String,
+            friendsRevision: String,
+            groupThematicRevision: String,
+            groupRevision: String
+    ): List<UserNode> {
+        return userRepository.addGroupSimilarity(
+                userId,
+                friendsRevision,
+                groupThematicRevision,
+                groupRevision,
+        )
+    }
+
+    fun removeGroupSimilarity(
+            userId: String,
+            friendsRevision: String,
+            groupThematicRevision: String,
+            groupRevision: String
+    ): List<UserNode> {
+        return userRepository.removeGroupSimilarity(
+                userId,
+                friendsRevision,
+                groupThematicRevision,
+                groupRevision,
+        )
+    }
 }

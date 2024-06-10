@@ -1,5 +1,6 @@
 package com.example.graphservice.entity.postgres
 
+import com.fasterxml.jackson.annotation.JsonView
 import jakarta.persistence.*
 import java.time.Instant
 
@@ -13,6 +14,10 @@ data class ImgSimilarityRevisionDraft(
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "img_themes_revision", nullable = false)
         val imgThemesRevision: ImgThemesRevisionDraft? = null,
+
+        @Column(name = "settings", nullable = false)
+        @JsonView
+        val settings: String? = null,
 
         @Column(name = "created_date", nullable = false)
         val createdDate: Instant? = null,

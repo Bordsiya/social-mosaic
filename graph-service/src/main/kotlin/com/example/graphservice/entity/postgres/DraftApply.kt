@@ -20,25 +20,31 @@ data class DraftApply(
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "friends_revision", nullable = false)
+        @JsonView
         val friendsRevision: FriendsRevisionDraft? = null,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "img_themes_revision", nullable = false)
+        @JsonView
         val imgThemesRevision: ImgThemesRevisionDraft? = null,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "group_themes_revision", nullable = false)
+        @JsonView
         val groupThemesRevision: GroupThemesRevisionDraft? = null,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "img_similarity_revision", nullable = false)
+        @JsonView
         val imgSimilarityRevision: ImgSimilarityRevisionDraft? = null,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "group_similarity_revision", nullable = false)
+        @JsonView
         val groupSimilarityRevision: GroupSimilarityRevisionDraft? = null,
 
         @Column(name = "created_date", nullable = false)
+        @JsonView
         val createdDate: Instant? = null,
 )
 

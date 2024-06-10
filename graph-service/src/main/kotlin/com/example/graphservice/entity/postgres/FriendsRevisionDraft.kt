@@ -2,6 +2,7 @@ package com.example.graphservice.entity.postgres
 
 import com.fasterxml.jackson.annotation.JsonView
 import jakarta.persistence.*
+import java.io.Serializable
 import java.time.Instant
 
 @Entity
@@ -39,4 +40,4 @@ data class FriendsRevisionDraft(
 data class FriendsRevisionDraftId(
         val id: String? = null,
         val userId: String? = null,
-)
+) : Serializable

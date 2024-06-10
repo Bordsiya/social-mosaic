@@ -28,6 +28,7 @@ create table if not exists public.img_similarity_revision_draft (
     id varchar(255) primary key,
     img_themes_revision varchar(255) not null,
     created_date timestamp with time zone not null,
+    settings text not null,
     primary key(id),
     foreign key (img_themes_revision) references img_themes_revision_draft(id)
 );
@@ -36,6 +37,7 @@ create table if not exists public.group_similarity_revision_draft (
     id varchar(255) primary key,
     group_themes_revision varchar(255) not null,
     created_date timestamp with time zone not null,
+    settings text not null,
     primary key(id),
     foreign key (group_themes_revision) references group_themes_revision_draft(id)
 );
