@@ -25,12 +25,12 @@ class KafkaConsumer(
 
         processService.updateTask(
                 requestId = updateResponse.requestId,
-                parentId = updateResponse.parentId,
                 name = updateResponse.taskName,
                 status = updateResponse.taskStatus,
                 error = updateResponse.error,
                 errorMessage = updateResponse.errorDescription,
                 revision = updateResponse.revision,
+                createdDate = updateResponse.createdDate,
         )
     }
 
@@ -40,16 +40,16 @@ class KafkaConsumer(
     )
     fun listenAnalyseResponses(response: String) {
         logger.info { "analyse response - $response" }
-        val taskResponse = objectMapper.readValue(response, TaskResponse::class.java)
+        val analyseResponse = objectMapper.readValue(response, TaskResponse::class.java)
 
         processService.updateTask(
-                requestId = taskResponse.requestId,
-                parentId = taskResponse.parentId,
-                name = taskResponse.taskName,
-                status = taskResponse.taskStatus,
-                error = taskResponse.error,
-                errorMessage = taskResponse.errorDescription,
-                revision = taskResponse.revision,
+                requestId = analyseResponse.requestId,
+                name = analyseResponse.taskName,
+                status = analyseResponse.taskStatus,
+                error = analyseResponse.error,
+                errorMessage = analyseResponse.errorDescription,
+                revision = analyseResponse.revision,
+                createdDate = analyseResponse.createdDate,
         )
     }
 

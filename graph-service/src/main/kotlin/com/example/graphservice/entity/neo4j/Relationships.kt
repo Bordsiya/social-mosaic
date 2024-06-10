@@ -9,7 +9,7 @@ data class FriendsSimilarity(
         @TargetNode
         val user: UserNode,
         @Property("friends_revision")
-        val friendsRevision: String? = null,
+        var friendsRevision: String? = null,
 )
 
 @RelationshipProperties
@@ -17,7 +17,7 @@ data class ImgSimilarity(
         @TargetNode
         val user: UserNode,
         @Property("img_revision")
-        val imgRevision: String? = null,
+        var imgRevision: String? = null,
 )
 
 @RelationshipProperties
@@ -25,5 +25,5 @@ data class GroupSimilarity(
         @TargetNode
         val user: UserNode,
         @Property("group_revision")
-        val groupRevision: String? = null,
+        var groupRevision: String? = null,
 )

@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
-@Table(name = "request")
+@Table(name = "task")
 data class Task(
         @Id
         @Column(name = "id")
@@ -14,7 +14,7 @@ data class Task(
         val id: String? = null,
 
         @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "parent_task", nullable = false)
+        @JoinColumn(name = "parent_id", nullable = false)
         @JsonView
         val parentId: Request? = null,
 

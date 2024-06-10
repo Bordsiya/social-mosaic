@@ -7,7 +7,7 @@ create table if not exists public.request
     open char(1) not null,
     type varchar(255) not null,
     idempotency_token varchar(255) not null,
-    parent_task varchar(255)
+    parent_task varchar(255) unique
 );
 
 create table if not exists public.process_result

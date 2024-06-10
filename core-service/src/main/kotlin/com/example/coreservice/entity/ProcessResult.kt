@@ -13,7 +13,7 @@ data class ProcessResult(
         val id: String? = null,
 
         @OneToOne
-        @JoinColumn(name = "id", nullable = false)
+        @JoinColumn(name = "request_id", nullable = false)
         @JsonView
         val requestId: Request? = null,
 

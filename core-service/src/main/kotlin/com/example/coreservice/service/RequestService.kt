@@ -7,6 +7,7 @@ import com.example.coreservice.exception.RequestNotFoundByParentId
 import com.example.coreservice.exception.RequestNotFoundException
 import com.example.coreservice.repository.RequestRepository
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -19,11 +20,7 @@ class RequestService(
             RequestNotFoundException::class,
     )
     fun get(requestId: String): Request {
-        return try {
-            requestRepository.getReferenceById(requestId)
-        } catch (e: EntityNotFoundException) {
-            throw RequestNotFoundById(requestId)
-        }
+        return requestRepository.findByIdOrNull(requestId) ?: throw RequestNotFoundById(requestId)
     }
 
     @Throws(

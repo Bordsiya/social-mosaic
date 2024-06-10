@@ -6,6 +6,7 @@ import com.example.coreservice.exception.RequestNotFoundException
 import com.example.coreservice.model.ProcessStatus
 import com.example.coreservice.repository.ProcessResultRepository
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -19,13 +20,7 @@ class ProcessResultService(
             ProcessResultNotFoundException::class,
     )
     fun get(requestId: String): ProcessResult {
-        return try {
-            processResultRepository.getReferenceById(requestId)
-        } catch (e: EntityNotFoundException) {
-            throw ProcessResultNotFoundException(
-                    requestId = requestId,
-            )
-        }
+        return processResultRepository.findByIdOrNull(requestId) ?: throw ProcessResultNotFoundException(requestId = requestId)
     }
 
     @Throws(

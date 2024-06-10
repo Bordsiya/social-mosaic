@@ -71,15 +71,14 @@ class ProcessService(
 
     fun updateTask(
             requestId: String,
-            parentId: String,
             name: String,
             status: TaskStatus,
             error: String? = null,
             errorMessage: String? = null,
             revision: String? = null,
+            createdDate: Instant,
     ) {
-        if (status == TaskStatus.FINISHED && (revision != null || error != null)) {
-            // task is fully completed
+        if (status == TaskStatus.COMPLETE) {
             transactionTemplate.execute { transactionStatus: TransactionStatus ->
                 try {
                     processResultService.save(
@@ -92,7 +91,7 @@ class ProcessService(
                     requestService.update(
                             requestId = requestId,
                             status = 'c',
-                            modifiedDate = Instant.now(),
+                            modifiedDate = createdDate,
                     )
                 } catch (_: RequestNotFoundException) {
                     logger.info { "Request not found while saving finished task results" }
@@ -103,12 +102,12 @@ class ProcessService(
         } else {
             try {
                 taskService.save(
-                        parentId = parentId,
+                        parentId = UUID.randomUUID().toString(),
                         name = name,
                         status = status,
                         error = error,
                         errorDescription = errorMessage,
-                        createdDate = Instant.now(),
+                        createdDate = createdDate,
                 )
             } catch (_: RequestNotFoundException) {
                 logger.info { "Request not found while saving medium task results" }

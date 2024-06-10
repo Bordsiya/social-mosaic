@@ -22,11 +22,11 @@ data class UserNode(
         val groupThemes: String? = null,
 
         @Relationship(type = "FRIENDS_SIMILARITY", direction = Relationship.Direction.OUTGOING)
-        val friendsSimilarities: List<FriendsSimilarity> = emptyList(),
+        val friendsSimilarities: MutableList<FriendsSimilarity> = mutableListOf(),
 
         @Relationship(type = "IMG_SIMILARITY", direction = Relationship.Direction.OUTGOING)
-        val imgSimilarities: List<ImgSimilarity> = emptyList(),
+        val imgSimilarities: MutableList<ImgSimilarity> = mutableListOf(),
 
         @Relationship(type = "GROUP_SIMILARITY", direction = Relationship.Direction.OUTGOING)
-        val groupSimilarities: List<GroupSimilarity> = emptyList()
+        val groupSimilarities: MutableList<GroupSimilarity> = mutableListOf(),
 )

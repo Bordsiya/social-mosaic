@@ -8,6 +8,8 @@ services:
     restart: unless-stopped
     environment:
       - NEO4J_AUTH=neo4j/password
+    networks:
+      - social-mosaic-network
 
   postgres-core-service:
     image: postgres:latest
@@ -17,6 +19,10 @@ services:
       - POSTGRES_DB=postgres
     ports:
       - '5432:5432'
+    volumes:
+      - ./core-service/src/main/resources/postgres:/docker-entrypoint-initdb.d
+    networks:
+      - social-mosaic-network
 
   postgres-analyse-service:
     image: postgres:latest
@@ -26,6 +32,10 @@ services:
       - POSTGRES_DB=postgres
     ports:
       - '5433:5432'
+    volumes:
+      - ./analyse-service/src/main/resources/postgres:/docker-entrypoint-initdb.d
+    networks:
+      - social-mosaic-network
 
   postgres-graph-service:
     image: postgres:latest
@@ -35,11 +45,15 @@ services:
       - POSTGRES_DB=postgres
     ports:
       - '5434:5432'
+    networks:
+      - social-mosaic-network
 
   zookeeper:
     image: zookeeper:3.5.8
     ports:
       - "2181:2181"
+    networks:
+      - social-mosaic-network
 
   kafka-update:
     image: wurstmeister/kafka
@@ -54,6 +68,8 @@ services:
       KAFKA_CREATE_TOPICS: "UPDATE_REQUESTS:1:1,UPDATE_RESPONSES:1:1"  # Topic:Partition:Replica
     depends_on:
       - zookeeper
+    networks:
+      - social-mosaic-network
 
   kafka-analyse:
     image: wurstmeister/kafka
@@ -68,6 +84,8 @@ services:
       KAFKA_CREATE_TOPICS: "ANALYSE_REQUESTS:1:1,ANALYSE_RESPONSES:1:1"  # Topic:Partition:Replica
     depends_on:
       - zookeeper
+    networks:
+      - social-mosaic-network
 
   mongodb-analyse-service:
     image: mongo:latest
@@ -78,39 +96,60 @@ services:
       MONGO_INITDB_ROOT_USERNAME: rootuser
       MONGO_INITDB_ROOT_PASSWORD: rootpass
       MONGO_INITDB_DATABASE: mydatabase
+    networks:
+      - social-mosaic-network
 
   api-gateway-external:
     build:
       dockerfile: api-gateway-external/Dockerfile
     ports:
       - '6000:8080'
+    networks:
+      - social-mosaic-network
 
   api-gateway-internal:
     build:
       dockerfile: api-gateway-internal/Dockerfile
     ports:
       - '6100:8080'
+    networks:
+      - social-mosaic-network
 
   core-service-1:
     build:
-      dockerfile: core-service/Dockerfile
+      context: ./core-service
+      dockerfile: Dockerfile
     ports:
       - '9000:8080'
+    networks:
+      - social-mosaic-network
 
   update-service-1:
     build:
-      dockerfile: update-service/Dockerfile
+      context: ./update-service
+      dockerfile: Dockerfile
     ports:
       - '9100:8080'
+    networks:
+      - social-mosaic-network
 
   analyse-service-1:
     build:
-      dockerfile: analyse-service/Dockerfile
+      context: ./analyse-service
+      dockerfile: Dockerfile
     ports:
       - '9200:8080'
+    networks:
+      - social-mosaic-network
 
   graph-service-1:
     build:
       dockerfile: graph-service/Dockerfile
     ports:
       - '9300:8080'
+    networks:
+      - social-mosaic-network
+
+networks:
+  social-mosaic-network:
+    driver: bridge

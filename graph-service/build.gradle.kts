@@ -38,6 +38,12 @@ dependencies {
 	implementation("io.github.microutils:kotlin-logging:2.0.10")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-neo4j")
+
+	// vk
+	implementation("com.vk.api:sdk:+")
+
+	// coroutines
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:+")
 }
 
 tasks.withType<KotlinCompile> {

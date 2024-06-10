@@ -19,6 +19,7 @@ class KafkaConsumer(
     fun listenAnalyseRequests(request: String) {
         logger.info { "analyse request - $request" }
         val analyseRequest = objectMapper.readValue(request, Request::class.java)
+        logger.info { analyseRequest }
         // TODO handle analyse request
     }
 
