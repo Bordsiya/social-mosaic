@@ -40,6 +40,13 @@ dependencies {
 	implementation("io.github.microutils:kotlin-logging:2.0.10")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
+	// spectral embedding calc
+	implementation("org.ejml:ejml-simple:0.41")
+	implementation("org.ejml:ejml-core:0.41")
+
+	// dbscan
+	implementation("com.github.haifengl:smile-core:2.6.0")
 }
 
 tasks.withType<KotlinCompile> {
