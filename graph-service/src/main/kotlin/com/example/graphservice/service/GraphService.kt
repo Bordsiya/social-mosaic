@@ -64,13 +64,15 @@ class GraphService(
     }
 
     fun updateImgSimilarity(
-            userId: String,
+            userId1: String,
+            userId2: String,
             friendsRevision: String,
             imgThematicRevision: String,
             imgRevision: String
     ): List<UserNode> {
         return userRepository.addImgSimilarity(
-                userId,
+                userId1,
+                userId2,
                 friendsRevision,
                 imgThematicRevision,
                 imgRevision,
@@ -78,13 +80,15 @@ class GraphService(
     }
 
     fun removeImgSimilarity(
-            userId: String,
+            userId1: String,
+            userId2: String,
             friendsRevision: String,
             imgThematicRevision: String,
             imgRevision: String
     ): List<UserNode> {
         return userRepository.removeImgSimilarity(
-                userId,
+                userId1,
+                userId2,
                 friendsRevision,
                 imgThematicRevision,
                 imgRevision,
@@ -92,13 +96,15 @@ class GraphService(
     }
 
     fun updateGroupSimilarity(
-            userId: String,
+            userId1: String,
+            userId2: String,
             friendsRevision: String,
             groupThematicRevision: String,
             groupRevision: String
     ): List<UserNode> {
         return userRepository.addGroupSimilarity(
-                userId,
+                userId1,
+                userId2,
                 friendsRevision,
                 groupThematicRevision,
                 groupRevision,
@@ -106,13 +112,15 @@ class GraphService(
     }
 
     fun removeGroupSimilarity(
-            userId: String,
+            userId1: String,
+            userId2: String,
             friendsRevision: String,
             groupThematicRevision: String,
             groupRevision: String
     ): List<UserNode> {
         return userRepository.removeGroupSimilarity(
-                userId,
+                userId1,
+                userId2,
                 friendsRevision,
                 groupThematicRevision,
                 groupRevision,

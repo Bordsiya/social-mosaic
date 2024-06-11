@@ -298,7 +298,7 @@ class UpdateService(
                     ?: throw IllegalStateException("No revision draft was saved.")
 
             withContext(dispatcher) {
-                processGroupNodes(graphNodeDescriptors, sagaActions)
+                processGroupNodes(graphNodeDescriptors, sagaActions, friendsRevision, groupThemesRevisionId)
             }
 
             return groupSimilarityRevisionDraft
@@ -310,15 +310,18 @@ class UpdateService(
     private suspend fun processGroupNodes(
             graphNodes: List<UserNode>,
             sagaActions: ConcurrentLinkedQueue<SagaAction>,
+            friendsRevision: String,
+            groupThemesRevisionId: String,
     ) {
         graphNodes.forEach { userNode ->
             userNode.friendsSimilarities.forEach { edge ->
-                val userThemesVector: List<Double> = parseThemes(userNode.imgThemes)
-                val friendThemesVector: List<Double> = parseThemes(edge.user.imgThemes)
+                val userThemesVector: List<Double> = parseThemes(userNode.groupThemes)
+                val friendThemesVector: List<Double> = parseThemes(edge.user.groupThemes)
                 val similarity = calculateJaccardSimilarity(userThemesVector, friendThemesVector)
 
                 val addAction = AddGroupSimilarityAction(
-                        graphService, userNode.userId!!, friendsRevisionId, imgThemesRevisionId, objectMapper.writeValueAsString(themes))
+                        graphService, userNode.userId!!,
+                        edge.user.userId!!, friendsRevision, groupThemesRevisionId, objectMapper.writeValueAsString(similarity))
                 addAction.execute()
                 sagaActions.add(addAction)
             }
@@ -349,7 +352,6 @@ class UpdateService(
                 friendsRevision = friendsRevision,
                 imgThematicRevision = imgThemesRevisionId,
         )
-        val queue = Channel<Pair<Long, Int>>(CHANNEL_CAPACITY)
         try {
             val saveAction = SaveImgSimilarityRevisionAction(
                     service = imgSimilarityRevisionDraftService,
@@ -369,8 +371,27 @@ class UpdateService(
         } catch (e: Exception) {
             sagaActions.toList().asReversed().forEach { it.compensate() }
             throw e
-        } finally {
-            queue.cancel()
+        }
+    }
+
+    private suspend fun processImgNodes(
+            graphNodes: List<UserNode>,
+            sagaActions: ConcurrentLinkedQueue<SagaAction>,
+            friendsRevision: String,
+            imgThemesRevisionId: String,
+    ) {
+        graphNodes.forEach { userNode ->
+            userNode.friendsSimilarities.forEach { edge ->
+                val userThemesVector: List<Double> = parseThemes(userNode.imgThemes)
+                val friendThemesVector: List<Double> = parseThemes(edge.user.imgThemes)
+                val similarity = calculateJaccardSimilarity(userThemesVector, friendThemesVector)
+
+                val addAction = AddImgSimilarityAction(
+                        graphService, userNode.userId!!,
+                        edge.user.userId!!, friendsRevision, imgThemesRevisionId, objectMapper.writeValueAsString(similarity))
+                addAction.execute()
+                sagaActions.add(addAction)
+            }
         }
     }
 

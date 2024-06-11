@@ -192,14 +192,16 @@ class AddGroupThemesAction(
 
 class AddImgSimilarityAction(
         private val graphService: GraphService,
-        private val userId: String,
+        private val userId1: String,
+        private val userId2: String,
         private val friendsRevisionId: String,
         private val imgThemesRevisionId: String,
         private val imgSimilarityRevisionId: String,
 ) : SagaAction {
     override suspend fun execute() {
         graphService.updateImgSimilarity(
-                userId = userId,
+                userId1 = userId1,
+                userId2 = userId2,
                 friendsRevision = friendsRevisionId,
                 imgThematicRevision = imgThemesRevisionId,
                 imgRevision = imgSimilarityRevisionId,
@@ -208,7 +210,8 @@ class AddImgSimilarityAction(
 
     override suspend fun compensate() {
         graphService.removeImgSimilarity(
-                userId = userId,
+                userId1 = userId1,
+                userId2 = userId2,
                 friendsRevision = friendsRevisionId,
                 imgThematicRevision = imgThemesRevisionId,
                 imgRevision = imgSimilarityRevisionId,
@@ -218,14 +221,16 @@ class AddImgSimilarityAction(
 
 class AddGroupSimilarityAction(
         private val graphService: GraphService,
-        private val userId: String,
+        private val userId1: String,
+        private val userId2: String,
         private val friendsRevisionId: String,
         private val groupThemesRevisionId: String,
         private val groupSimilarityRevisionId: String,
 ) : SagaAction {
     override suspend fun execute() {
         graphService.updateGroupSimilarity(
-                userId = userId,
+                userId1 = userId1,
+                userId2 = userId2,
                 friendsRevision = friendsRevisionId,
                 groupThematicRevision = groupThemesRevisionId,
                 groupRevision = groupSimilarityRevisionId,
@@ -234,7 +239,8 @@ class AddGroupSimilarityAction(
 
     override suspend fun compensate() {
         graphService.removeGroupSimilarity(
-                userId = userId,
+                userId1 = userId1,
+                userId2 = userId2,
                 friendsRevision = friendsRevisionId,
                 groupThematicRevision = groupThemesRevisionId,
                 groupRevision = groupSimilarityRevisionId,

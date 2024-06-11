@@ -39,26 +39,24 @@ interface UserRepository : Neo4jRepository<UserNode, String> {
             "RETURN friend")
     fun removeGroupThemes(userId: String, friendsRevision: String): List<UserNode>
 
-    @Query("MATCH (user:User)-[fs:FRIENDS_SIMILARITY {friends_revision: \$friendsRevision}]->(friend:User)" +
-    "WHERE user.userId = \$userId AND user.imgThematicRevision = \$imgThematicRevision" +
-    "AND friend.userId = \$userId AND friend.imgThematicRevision = \$imgThematicRevision" +
-    "MERGE (user)-[is:IMG_SIMILARITY {img_revision: \$imgRevision}]->(friend)" +
-    "RETURN friend")
+    @Query("MATCH (user:User {userId: \$userId1, imgThematicRevision: \$imgThematicRevision})-[fs:FRIENDS_SIMILARITY" + "{friends_revision: \$friendsRevision}]->(friend:User {userId: \$userId2, imgThematicRevision: \$imgThematicRevision})" +
+            "MERGE (user)-[is:IMG_SIMILARITY]->(friend)" +
+            "SET is.img_revision = \$imgRevision" +
+            "RETURN friend")
     fun addImgSimilarity(
-            userId: String,
+            userId1: String,
+            userId2: String,
             friendsRevision: String,
             imgThematicRevision: String,
             imgRevision: String
     ): List<UserNode>
 
-    @Query("MATCH (user:User)-[fs:FRIENDS_SIMILARITY {friends_revision: \$friendsRevision}]->(friend:User)" +
-    "WHERE user.userId = \$userId AND user.imgThematicRevision = \$imgThematicRevision AND" +
-          "friend.userId <> \$userId AND friend.imgThematicRevision = \$imgThematicRevision" +
-    "MATCH (user)-[is:IMG_SIMILARITY {img_revision: \$imgRevision}]->(friend)" +
-    "DELETE is" +
-    "RETURN friend")
+    @Query("MATCH (user:User {userId: \$userId1, imgThematicRevision: \$imgThematicRevision})-[fs:FRIENDS_SIMILARITY {friends_revision: \$friendsRevision}]->(friend:User {userId: \$userId2, imgThematicRevision: \$imgThematicRevision})-[is:IMG_SIMILARITY {img_revision: \$imgRevision}]->(user)" +
+            "DELETE is" +
+            "RETURN user, friend")
     fun removeImgSimilarity(
-            userId: String,
+            userId1: String,
+            userId2: String,
             friendsRevision: String,
             imgThematicRevision: String,
             imgRevision: String
@@ -76,14 +74,12 @@ interface UserRepository : Neo4jRepository<UserNode, String> {
             groupRevision: String
     ): List<UserNode>
 
-    @Query("MATCH (user:User)-[fs:FRIENDS_SIMILARITY {friends_revision: \$friendsRevision}]->(friend:User)" +
-            "WHERE user.userId = \$userId AND user.groupThematicRevision = \$groupThematicRevision AND" +
-            "friend.userId <> \$userId AND friend.groupThematicRevision = \$groupThematicRevision" +
-            "MATCH (user)-[is:GROUP_SIMILARITY {group_revision: \$groupRevision}]->(friend)" +
+    @Query("MATCH (user:User {userId: \$userId1, groupThematicRevision: \$groupThematicRevision})-[fs:FRIENDS_SIMILARITY {friends_revision: \$friendsRevision}]->(friend:User {userId: \$userId2, groupThematicRevision: \$groupThematicRevision})-[is:GROUP_SIMILARITY {group_revision: \$groupRevision}]->(user)" +
             "DELETE is" +
-            "RETURN friend")
+            "RETURN user, friend")
     fun removeGroupSimilarity(
-            userId: String,
+            userId1: String,
+            userId2: String,
             friendsRevision: String,
             groupThematicRevision: String,
             groupRevision: String
