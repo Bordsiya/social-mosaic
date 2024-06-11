@@ -64,13 +64,13 @@ interface UserRepository : Neo4jRepository<UserNode, String> {
             imgRevision: String
     ): List<UserNode>
 
-    @Query("MATCH (user:User)-[fs:FRIENDS_SIMILARITY {friends_revision: \$friendsRevision}]->(friend:User)" +
-            "WHERE user.userId = \$userId AND user.groupThematicRevision = \$groupThematicRevision" +
-            "AND friend.userId = \$userId AND friend.groupThematicRevision = \$groupThematicRevision" +
-            "MERGE (user)-[is:GROUP_SIMILARITY {group_revision: \$groupRevision}]->(friend)" +
-            "RETURN friend")
+    @Query("MATCH (user:User {userId: \$userId1, groupThematicRevision: \$groupThematicRevision})-[fs:FRIENDS_SIMILARITY" + "{friends_revision: \$friendsRevision}]->(friend:User {userId: \$userId2, groupThematicRevision: \$groupThematicRevision})" +
+          "MERGE (user)-[is:GROUP_SIMILARITY]->(friend)" +
+          "SET is.group_revision = \$groupRevision" +
+          "RETURN friend")
     fun addGroupSimilarity(
-            userId: String,
+            userId1: String,
+            userId2: String,
             friendsRevision: String,
             groupThematicRevision: String,
             groupRevision: String
@@ -87,5 +87,23 @@ interface UserRepository : Neo4jRepository<UserNode, String> {
             friendsRevision: String,
             groupThematicRevision: String,
             groupRevision: String
+    ): List<UserNode>
+
+    @Query(" MATCH (user:User {userId: \$userId})" +
+            "MATCH (user)-[fs:FRIENDS_SIMILARITY {friends_revision: \$friendsRevision}]->(friend:User {img_thematic_revision: \$imgThematicRevision})" +
+            "RETURN user, fs, friend")
+    fun findUserFriendsWithImgThematicRevision(
+            userId: String,
+            friendsRevision: String,
+            imgThematicRevision: String
+    ): List<UserNode>
+
+    @Query(" MATCH (user:User {userId: \$userId})" +
+            "MATCH (user)-[fs:FRIENDS_SIMILARITY {friends_revision: \$friendsRevision}]->(friend:User {group_thematic_revision: \$groupThematicRevision})" +
+            "RETURN user, fs, friend")
+    fun findUserFriendsWithGroupThematicRevision(
+            userId: String,
+            friendsRevision: String,
+            groupThematicRevision: String
     ): List<UserNode>
 }

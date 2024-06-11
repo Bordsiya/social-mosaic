@@ -118,4 +118,28 @@ class GraphService(
                 groupRevision,
         )
     }
+
+    fun findUserFriendsWithImgThematicRevision(
+            userId: String,
+            friendsRevision: String,
+            imgThematicRevision: String
+    ): List<UserNode> {
+        return userRepository.findUserFriendsWithImgThematicRevision(
+                userId = userId,
+                friendsRevision = friendsRevision,
+                imgThematicRevision = imgThematicRevision,
+        )
+    }
+
+    fun findUserFriendsWithGroupThematicRevision(
+            userId: String,
+            friendsRevision: String,
+            groupThematicRevision: String
+    ): List<UserNode> {
+        return userRepository.findUserFriendsWithGroupThematicRevision(
+                userId = userId,
+                friendsRevision = friendsRevision,
+                groupThematicRevision = groupThematicRevision,
+        )
+    }
 }

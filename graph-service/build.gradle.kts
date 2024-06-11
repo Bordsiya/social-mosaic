@@ -44,6 +44,12 @@ dependencies {
 
 	// coroutines
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:+")
+
+	// img analyser
+	implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta7")
+	implementation("org.nd4j:nd4j-native-platform:1.0.0-beta7")
+	implementation("org.deeplearning4j:deeplearning4j-zoo:1.0.0-beta7")
+
 }
 
 tasks.withType<KotlinCompile> {
